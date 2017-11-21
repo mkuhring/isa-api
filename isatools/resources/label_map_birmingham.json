@@ -1,0 +1,96 @@
+{
+  "assay_types": [
+    {
+      "code": "A001",
+      "measurement_type": "RF",
+      "technology_type": "LCMS",
+      "targeted": true
+    },
+    {
+      "code": "A002",
+      "measurement_type": "HILIC",
+      "technology_type": "LCMS",
+      "targeted": true
+    }
+  ],
+  "instrument_names": [
+    {
+      "code": "QE01",
+      "instrument_name": "Q Exactive",
+      "instrument_vendor": "Thermo Scientific",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "1"
+    },
+    {
+      "code": "QE02",
+      "instrument_name": "Q Exactive",
+      "instrument_vendor": "Thermo Scientific",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "2"
+    },
+    {
+      "code": "QE03",
+      "instrument_name": "Q Exactive",
+      "instrument_vendor": "Thermo Scientific",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "3"
+    },
+    {
+      "code": "QE04",
+      "instrument_name": "Q Exactive",
+      "instrument_vendor": "Thermo Scientific",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "4"
+    },
+    {
+      "code": "OE01",
+      "instrument_name": "Orbitrap Elite",
+      "instrument_vendor": "Thermo Scientific",
+      "instrument_location": "4th Floor Biosciences"
+    },
+    {
+      "code": "OV01",
+      "instrument_name": "Orbitrap Velos",
+      "instrument_vendor": "Thermo Scientific",
+      "instrument_location": "3rd Floor Biosciences"
+    },
+    {
+      "code": "XG01",
+      "instrument_name": "Xevo G2-XS QTof",
+      "instrument_vendor": "Waters",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "1"
+    },
+    {
+      "code": "XG02",
+      "instrument_name": "Xevo G2-XS QTof",
+      "instrument_vendor": "Waters",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "2"
+    },
+    {
+      "code": "XG03",
+      "instrument_name": "Xevo G2-XS QTof",
+      "instrument_vendor": "Waters",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "3"
+    },
+    {
+      "code": "XG04",
+      "instrument_name": "Xevo G2-XS QTof",
+      "instrument_vendor": "Waters",
+      "instrument_location": "4th Floor Biosciences",
+      "instrument_instance_id": "4"
+    },
+    {
+      "code": "TQ01",
+      "instrument_name": "TSQ Quantiva Triple Quadrupole",
+      "instrument_vendor": "Thermo Fisher Scientific"
+    },
+    {
+      "code": "NMR01",
+      "instrument_name": "600MHz NMR",
+      "instrument_vendor": "Bruker"
+    }
+  ]
+}
