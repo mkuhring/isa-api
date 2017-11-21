@@ -2,13 +2,14 @@
   "assay_types": [
     {
       "code": "A001",
-      "measurement_type": "RF",
+      "": "RF",
+      "technology_type": "mass spectrometry",
       "technology_type": "LCMS",
       "targeted": true
     },
     {
       "code": "A002",
-      "measurement_type": "HILIC",
+      "": "HILIC",
       "technology_type": "LCMS",
       "targeted": true
     }
@@ -92,5 +93,7 @@
       "instrument_name": "600MHz NMR",
       "instrument_vendor": "Bruker"
     }
-  ]
+  ],
+  "raw_filename_template": "{assay_type}_{extract_type}_{ion_mode}_{batch_number}_{sample_class}_{biological_replicate}_{technical_replicate}",
+  "example1": "A001_p_neg_01_QC_001_01"
 }
