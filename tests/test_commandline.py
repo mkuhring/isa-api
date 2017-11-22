@@ -29,7 +29,7 @@ class TestCommandLineIsaTools(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 main(argv=["--version"])
                 output = out.getvalue().strip()
-                self.assertEqual(output, "isatools 0.7")
+                self.assertEqual(output, "isatools 0.9")
 
     def test_command_help(self):
         from isatools.__main__ import main
@@ -50,3 +50,11 @@ optional arguments:
                         directory if ISA-Tab archive out)
   --version             show program's version number and exit
   -v                    show more output""")
+
+    # def test_command_create(self):
+    #     from isatools.__main__ import main
+    #     with captured_output() as (out, err):
+    #         with self.assertRaises(SystemExit):
+    #             main(argv=["--create"])
+    #             output = out.getvalue().strip()
+    #             print(output)

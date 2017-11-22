@@ -94,6 +94,8 @@
       "instrument_vendor": "Bruker"
     }
   ],
-  "raw_filename_template": "{assay_type}_{extract_type}_{ion_mode}_{batch_number}_{sample_class}_{biological_replicate}_{technical_replicate}",
-  "example1": "A001_p_neg_01_QC_001_01"
+  "raw_filename_template1": "{assay_type}_{extract_type}_{ion_mode}_{batch_number}_{sample_class}_{biological_replicate}_{technical_replicate}",
+  "raw_filename_template2": "{sample_class}_{assay_type}_{batch_number}_{biological_replicate}_{technical_replicate}",
+  "example1": "A001_p_neg_01_QC_001_01",
+  "example2": "QC_A001_001_01_01"
 }

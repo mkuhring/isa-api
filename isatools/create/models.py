@@ -10,7 +10,6 @@ import random
 import uuid
 from collections import Iterable
 from collections import OrderedDict
-from operator import itemgetter
 from numbers import Number
 
 from isatools import config
@@ -985,7 +984,7 @@ class IsaModelObjectFactory(object):
         else:
             self.__treatment_sequence = treatment_sequence
 
-    def create_study_from_plan(self):
+    def create_study_from_plan(self, label_map=None):
         if self.sample_assay_plan is None:
             raise ISAModelAttributeError('sample_assay_plan must be set to '
                                          'create model objects in factory')
@@ -1028,14 +1027,44 @@ class IsaModelObjectFactory(object):
         sample_qc_plan = self.sample_assay_plan
         prebatch = sample_qc_plan.pre_run_batch
         if isinstance(prebatch, SampleQCBatch):
-            qcsource = Source(name='qc_prebatch_in', characteristics=[
-                Characteristic(
-                    category=OntologyAnnotation(term='Material Type'),
-                    value=OntologyAnnotation(term=prebatch.material))])
-            sources.append(qcsource)
             for i, (p, v) in enumerate(prebatch.parameter_values):
+                # generate sample name
+                if label_map is not None:
+                    name_template = label_map['raw_filename_template1']
+                    sample_name = name_template.format(
+                        assay_type='',
+                        extract_type='',
+                        ion_mode='',
+                        batch_number='',
+                        sample_class=prebatch.material,
+                        biological_replicate=i,
+                        technical_replicate='',
+                    )
+                    sample_name = sample_name.strip('_')
+                else:
+                    sample_name = 'qc_prebatch_in-{}'.format(i)
+                qcsource = Source(name=sample_name, characteristics=[
+                    Characteristic(
+                        category=OntologyAnnotation(term='Material Type'),
+                        value=OntologyAnnotation(term=prebatch.material))])
+                sources.append(qcsource)
                 qc_param_set.add(p)
-                sample = Sample(name='qc_prebatch_out-{}'.format(i))
+                # generate sample name
+                if label_map is not None:
+                    name_template = label_map['raw_filename_template1']
+                    sample_name = name_template.format(
+                        assay_type='',
+                        extract_type='',
+                        ion_mode='',
+                        batch_number='',
+                        sample_class=prebatch.material,
+                        biological_replicate=i,
+                        technical_replicate='',
+                    )
+                    sample_name = sample_name.strip('_')
+                else:
+                    sample_name = 'qc_prebatch_out-{}'.format(i)
+                sample = Sample(name=sample_name)
                 qc_param = sample_collection.get_param(p)
                 if qc_param is None:
                     sample_collection.add_param(p)
@@ -1053,7 +1082,8 @@ class IsaModelObjectFactory(object):
                 ]
                 samples.append(sample)
                 process_sequence.append(process)
-        for (group_id, fvs), ranks in group_rank_map.items():
+        for (group_id, treatement), ranks in group_rank_map.items():
+            fvs = treatement.factor_values
             for subjn in (str(x) for x in range(group_size)):
                 material_type = Characteristic(
                     category=OntologyAnnotation(
@@ -1114,12 +1144,27 @@ class IsaModelObjectFactory(object):
                             process_sequence.append(process)
         postbatch = sample_qc_plan.post_run_batch
         if isinstance(postbatch, SampleQCBatch):
-            qcsource = Source(name='qc_postbatch_in', characteristics=[
-                Characteristic(
-                    category=OntologyAnnotation(term='Material Type'),
-                    value=OntologyAnnotation(term=postbatch.material))])
-            sources.append(qcsource)
             for i, (p, v) in enumerate(postbatch.parameter_values):
+                # generate sample name
+                if label_map is not None:
+                    name_template = label_map['raw_filename_template1']
+                    sample_name = name_template.format(
+                        assay_type='',
+                        extract_type='',
+                        ion_mode='',
+                        batch_number='',
+                        sample_class=prebatch.material,
+                        biological_replicate=i,
+                        technical_replicate='',
+                    )
+                    sample_name = sample_name.strip('_')
+                else:
+                    sample_name = 'qc_postbatch_in-{}'.format(i)
+                qcsource = Source(name=sample_name, characteristics=[
+                    Characteristic(
+                        category=OntologyAnnotation(term='Material Type'),
+                        value=OntologyAnnotation(term=postbatch.material))])
+                sources.append(qcsource)
                 qc_param_set.add(p)
                 sample = Sample(name='qc_postbatch_out-{}'.format(i))
                 qc_param = sample_collection.get_param(p)
@@ -1133,7 +1178,7 @@ class IsaModelObjectFactory(object):
                 process.parameter_values = [
                     ParameterValue(
                         category=sample_collection.get_param('Run Order'),
-                                   value=(sample_count + 1)),
+                                 value=(sample_count + 1)),
                     ParameterValue(category=sample_collection.get_param(p),
                                    value=v)
                 ]

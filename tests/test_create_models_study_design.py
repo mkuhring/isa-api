@@ -693,8 +693,7 @@ class IsaModelObjectFactoryTest(unittest.TestCase):
             plan,  treatment_sequence).create_study_from_plan()
         study.filename = 's_study.txt'
         self.investigation.studies = [study]
-        # 36 sources, 38 QC sources
-        self.assertEqual(74, len(study.sources))
+        self.assertEqual(92, len(study.sources))
         self.assertEqual(36, len(
             [x for x in study.sources
              if x.get_char('Material Type').value.term == 'solvent']))
@@ -907,3 +906,47 @@ class IsaModelObjectFactoryTest(unittest.TestCase):
         study = isa_factory.create_assays_from_plan()
         self.assertEqual(len(study.assays), 11)
         self.assertEqual(len(study.protocols), 7)
+
+    def test_custom_labels(self):
+        plan = SampleAssayPlan()
+        plan.add_sample_type('liver')
+        plan.add_sample_plan_record('liver', 5)
+        plan.add_sample_type('blood')
+        plan.add_sample_plan_record('blood', 3)
+        plan.group_size = 2
+        plan.add_sample_type('solvent')
+        plan.add_sample_qc_plan_record('solvent', 8)
+        plan.pre_run_batch = {
+            'material': 'blank',
+            'parameter': 'param1',
+            'values': [
+                5, 4, 3, 2, 1, 1, 1, 1, 1, 1
+            ]
+        }
+        plan.post_run_batch = {
+            'material': 'blank',
+            'parameter': 'param2',
+            'values': [
+                1, 1, 1, 1, 1, 1, 2, 3, 4, 5
+            ]
+        }
+
+        treatment_factory = TreatmentFactory(
+            factors=[self.f1, self.f2, self.f3])
+        treatment_factory.add_factor_value(
+            self.f1, {'cocaine', 'crack', 'aether'})
+        treatment_factory.add_factor_value(self.f2, {'low', 'medium', 'high'})
+        treatment_factory.add_factor_value(self.f3, {'short', 'long'})
+        ffactorial_design_treatments = \
+            treatment_factory.compute_full_factorial_design()
+        treatment_sequence = TreatmentSequence(
+            ranked_treatments={(x, 1) for x in ffactorial_design_treatments})
+        # makes each study group ranked in sequence
+        import json
+        study = IsaModelObjectFactory(
+            plan,  treatment_sequence).create_study_from_plan(json.load(open(
+            '/Users/dj/PycharmProjects/isa-api/isatools/resources/label_map_birmingham.json')))
+        study.filename = 's_study.txt'
+        i = Investigation(studies=[study])
+        from isatools import isatab
+        print(isatab.dumps(i))
