@@ -3814,45 +3814,37 @@ class ProcessSequenceFactory:
                                             value=str(
                                                 object_series[comment_column])))
 
-                for _, object_series in pbar(DF.drop_duplicates().iterrows()):
-                    node_name = str(object_series['Sample Name'])
-                    node_key = ":".join(['Sample Name', node_name])
-                    material = None
-                    try:
-                        material = samples[node_key]
-                    except KeyError:
-                        pass  # skip if object not found
-                    if isinstance(
-                            material, Sample) and self.factors is not None:
+                        if isinstance(
+                                material, Sample) and self.factors is not None:
 
-                        for fv_column in [
-                            c for c in DF.columns if c.startswith(
-                                'Factor Value[')]:
+                            for fv_column in [
+                                c for c in DF.columns if c.startswith(
+                                    'Factor Value[')]:
 
-                            category_key = next(iter(
-                                _RX_FACTOR_VALUE.findall(fv_column)))
+                                category_key = next(iter(
+                                    _RX_FACTOR_VALUE.findall(fv_column)))
 
-                            factor_hits = [
-                                f for f in self.factors if
-                                f.name == category_key]
+                                factor_hits = [
+                                    f for f in self.factors if
+                                    f.name == category_key]
 
-                            if len(factor_hits) == 1:
-                                factor = factor_hits[0]
-                            else:
-                                raise ValueError(
-                                    'Could not resolve Study Factor from '
-                                    'Factor Value ', category_key)
+                                if len(factor_hits) == 1:
+                                    factor = factor_hits[0]
+                                else:
+                                    raise ValueError(
+                                        'Could not resolve Study Factor from '
+                                        'Factor Value ', category_key)
 
-                            fv = FactorValue(factor_name=factor)
+                                fv = FactorValue(factor_name=factor)
 
-                            v, u = get_value(
-                                fv_column, DF.columns, object_series,
-                                ontology_source_map, unit_categories)
+                                v, u = get_value(
+                                    fv_column, DF.columns, object_series,
+                                    ontology_source_map, unit_categories)
 
-                            fv.value = v
-                            fv.unit = u
+                                fv.value = v
+                                fv.unit = u
 
-                            material.factor_values.append(fv)
+                                material.factor_values.append(fv)
 
             elif object_label in _LABELS_DATA_NODES:
                 if isa_logging.show_pbars:
