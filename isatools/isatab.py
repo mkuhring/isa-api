@@ -3913,7 +3913,10 @@ class ProcessSequenceFactory:
                     output_node_index = find_gt(node_cols, object_label_index)
                     output_proc_index = find_gt(proc_cols, object_label_index)
 
-                    if output_proc_index < output_node_index > -1:
+                    # output_node_index > -1: there is a material after the current process --> ok
+                    # output_proc_index = -1: no process after the current process  --> ok
+                    # output_node_index < output_proc_index: material before next process --> ok
+                    if -1 < output_node_index and (output_node_index < output_proc_index or output_proc_index is -1):
 
                         output_node_label = DF.columns[output_node_index]
                         output_node_value = str(
